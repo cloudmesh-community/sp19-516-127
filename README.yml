@@ -8,5 +8,9 @@ owner:
 section:
   - title: HPC in the Cloud 
     keyword: HPC
-    url: 
-    github: 
+    url:
+project:
+  - keyword: AWS, VM
+    title: AWS VM manager
+    url:
+    code:
