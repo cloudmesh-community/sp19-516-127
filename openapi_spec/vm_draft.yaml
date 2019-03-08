@@ -8,7 +8,7 @@ info:
     A service to use compute and storage resources accross multiple
     clouds using swagger -2.0 specification and codegen
 
-    * TODO: assign and review
+    * TODO: review
 
   termsOfService: https://github.com/cloudmesh-community/nist/blob/master/LICENSE.txt
   contact:
