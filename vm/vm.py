@@ -373,10 +373,11 @@ class VmCommand(PluginCommand):
 
         elif arguments.status:
 
-            names = ["test1", "test2", "test3"]
-#
-#	Needs to be initialized somewhere else 
-#
+            # get this from get_names()
+            
+            names = ["test1", "test2", "test3"] 
+
+            # Needs to be initialized somewhere else 
             conf=Config("~/.cloudmesh/cloudmesh4.yaml")["cloudmesh"]
             auth=conf["cloud"]['aws']
 
@@ -384,20 +385,16 @@ class VmCommand(PluginCommand):
             aws_secret_access_key=auth['credentials']['EC2_SECRET_KEY']
             region_name=auth['default']['region']
 
-
             EC2Driver = get_driver(LibcloudProvider.EC2)
-            pprint(EC2Driver)
-            
-#	drivers contains list of drivers, could work with multiple drivers
+                        
+            # drivers contains list of drivers, could work with multiple drivers
             drivers = [EC2Driver(aws_access_key_id, aws_secret_access_key)]
             nodes = []
             for driver in drivers:
                 nodes += driver.list_nodes()
-#            print("Current nodes:",nodes)
+            # print("Current nodes:",nodes)
 
-#
-# nodes contains all current nodes associated with aws_access_key_iD
-#
+            # nodes contains all current nodes associated with aws_access_key_iD
 
             if arguments["--cloud"]:
                 clouds = get_clouds(arguments, variables)
@@ -410,7 +407,6 @@ class VmCommand(PluginCommand):
 
             for name in names:
                 found = 0
-                #Console.msg("{label} {name}".format(label="status", name=name))
                 for node in nodes:
                     if node.name == name:
                         print(node.name,"status:",node.status)
