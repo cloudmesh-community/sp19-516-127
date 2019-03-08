@@ -14,6 +14,10 @@ from libcloud.compute.providers import get_driver
 
 from cloudmesh.abstractclass.ComputeNodeABC import ComputeNodeABC 
 
+# cms vm status --cloud='aws'
+# cms vm status NAMES --cloud='aws'
+
+
 class AwsActions(object):
 
     ProviderMapper = {
@@ -302,11 +306,11 @@ class VmCommand(PluginCommand):
             if arguments["--cloud"]:
                 clouds = get_clouds(arguments, variables)
                 print(clouds)
-                for cloud in clouds:
-                    Console.msg(
-                        "find names in cloud {cloud}".format(cloud=cloud))
-                    # names = find all names in these clouds
-                    # implemented as nodes for aws below
+                # for cloud in clouds:
+                #    Console.msg(
+                #        "find names in cloud {cloud}".format(cloud=cloud))
+                #    # names = find all names in these clouds
+                #    # implemented as nodes for aws below
             else:
                 names = get_names(arguments, variables)
             
