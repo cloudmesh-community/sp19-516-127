@@ -11,12 +11,9 @@ from cloudmesh.management.configuration.config import Config
 
 from libcloud.compute.types import Provider as LibcloudProvider 
 from libcloud.compute.providers import get_driver
+from libcloud.compute.base import NodeImage
 
 from cloudmesh.abstractclass.ComputeNodeABC import ComputeNodeABC 
-
-# cms vm status --cloud='aws'
-# cms vm status NAMES --cloud='aws'
-
 
 class AwsActions(object):
 
@@ -30,60 +27,6 @@ class AwsActions(object):
         self._provider = LibcloudProvider.EC2
 
 
-    def list_flavors(self):
-        flavors = self._provider.flavors()
-        print(Printer.list(flavors))
-
-
-    def allocate_node(self, image=None, flavor=None, key=None, public_ip=None):
-
-        # default kwargs can't be used due to dself, ocopt
-
-        name      = 'cloudmesh'
-        image     = image      or 'ami-c58c1dd3'
-        flavor    = flavor     or 't2.micro'
-        key       = key        or gethostname()
-        public_ip = public_ip  or False
-
-        node = self._provider.allocate_node(name=name, key=key, image=image, flavor=flavor)
-        print('Booted', node.id)
-
-        if public_ip:
-            addr = None
-            for a in self._provider.addresses():
-                if not a.instance_id:
-                    print('Using old ip', a.public_ip)
-                    addr = a
-                    break
-
-            if not addr:
-                print('Allocating new ip')
-                addr = self._provider.allocate_ip()
-
-            print('Waiting for node')
-            node.wait_until_running()
-            print('Associating public ip', addr.public_ip)
-            addr.associate(InstanceId=node.id)
-
-
-
-    def deallocate_node(self, id):
-        self._provider.deallocate_node(id)
-
-
-    def list_nodes(self):
-        nodes = []
-        for n in self._provider.nodes():
-            d = {}
-            d['id'] = n.id
-            d['key'] = n.key_name
-            d['image_id'] = n.image_id
-            d['private_ip'] = n.private_ip_address
-            d['public_ip'] = n.public_ip_address
-            d['state'] = n.state['Name']
-            nodes.append(d)
-
-        print(Printer.list(nodes))
 
 class VmCommand(PluginCommand):
 
@@ -300,17 +243,31 @@ class VmCommand(PluginCommand):
 
         variables = Variables()
 
+        # Needs to be initialized somewhere else 
+        conf=Config("~/.cloudmesh/cloudmesh4.yaml")["cloudmesh"]
+        auth=conf["cloud"]['aws']
+
+        aws_access_key_id=auth['credentials']['EC2_ACCESS_ID']
+        aws_secret_access_key=auth['credentials']['EC2_SECRET_KEY']
+        region_name=auth['default']['region']
+
+        EC2Driver = get_driver(LibcloudProvider.EC2)
+                      
+        # drivers contains list of drivers, could work with multiple drivers
+        drivers = [EC2Driver(aws_access_key_id, aws_secret_access_key, region='us-east-2')]
+        
+        current_status={}
+        
         if arguments.status:
             names = []
             nodes = [] 
             if arguments["--cloud"]:
                 clouds = get_clouds(arguments, variables)
                 print(clouds)
-                # for cloud in clouds:
-                #    Console.msg(
-                #        "find names in cloud {cloud}".format(cloud=cloud))
-                #    # names = find all names in these clouds
-                #    # implemented as nodes for aws below
+#                for cloud in clouds:
+#                    Console.msg(
+#                        "find names in cloud {cloud}".format(cloud=cloud))
+#                    # names = find all names in these clouds
             else:
                 names = get_names(arguments, variables)
             
@@ -318,45 +275,86 @@ class VmCommand(PluginCommand):
             if arguments["NAMES"]:
                 names += arguments["NAMES"]
             else:
-                names = ["test1", "test2", "test3"] 
+                names = ["test", "test2", "test3"] 
 
-            # ---------------------------------------
-            # Needs to be initialized somewhere else?
-            #
-            
-            conf=Config("~/.cloudmesh/cloudmesh4.yaml")["cloudmesh"]
-            auth=conf["cloud"]['aws']
-
-            aws_access_key_id=auth['credentials']['EC2_ACCESS_ID']
-            aws_secret_access_key=auth['credentials']['EC2_SECRET_KEY']
-            region_name=auth['default']['region']
-
-            #
-            #
-            # ---------------------------------------
-            
-            EC2Driver = get_driver(LibcloudProvider.EC2)
-                        
-            # drivers contains list of drivers, could work with multiple drivers
-            drivers = [EC2Driver(aws_access_key_id, aws_secret_access_key)]
+            nodes = []
 
             for driver in drivers:
                 nodes += driver.list_nodes()
-            # print("Current nodes:",nodes) will ist all nodes found in drivers
-
+            print("Current nodes:",nodes)
+            print(nodes[0])
             # nodes contains all current nodes associated with aws_access_key_iD
 
             for name in names:
                 found = 0
                 for node in nodes:
                     if node.name == name:
-                        print("name",node.name,"status:",node.status)
+                        print("found",node.name) 
+                        print(node.name,"status:",node.state)
                         found=1
                 if found == 0:
-                    print("name:",name,"status:","not found")
+                    print(name,"status:","not found")
+            return
+        
+        elif arguments.boot:
+            try:
+                numb_of_nodes=int(n)
+            except:
+                numb_of_nodes=1
+                
+            print("start")
+            
+            driver_ec2 = EC2Driver(aws_access_key_id, aws_secret_access_key, region='us-east-2')
+            numb_of_nodes=1
+            for number in range(numb_of_nodes):
+                name      = 'test_cloudmesh' + str(number)
+                image     = 'ami-0653e888ec96eab9b'     
+                flavor    = 't2.micro'
+                key       = 'test_awskeys'        
+                public_ip = '3.17.128.170'
+            
+                current_status[name] = "starting"
+                
+                #images = driver_ec2.list_images()
+                #image1 = [i for i in images if i.id == image][0]
 
+                sizes = driver_ec2.list_sizes()
+                size = [s for s in sizes if s.id == 't2.micro'][0]   
+
+                #node = self._provider.allocate_node(name=name, key=key, image=image, flavor=flavor)
+                #node = driver_ec2.create_node(name=name, key=key, image=image1, size=size)
+                
+                node_image = NodeImage(id=image, name=None, driver=driver_ec2)
+                node = driver_ec2.create_node(name='test', image=node_image, size=size) 
+                
+                print(name,node.id,"status=starting")
+                #optional wait here?
+                #print('Waiting...')
+                #node.wait_until_running()
+                #current_status[name] = "running"
             return
 
+                   
+        elif arguments.ssh:
+            # need to get name.pem from aws 
+            # ssh -i "name.pem" ubuntu@ec2-3-17-128-170.us-east-2.compute.amazonaws.com
+            print("ssh")
+            return
+        
+        elif arguments.stop:
+            print("stop")
+            # use these as a demo, node_id can be retrieved from the same code in vm status implemented above
+            # implemented above as list_nodes() and node.name
+            node_id = 'i-08f3ed1058f95f8bd' 
+            driver_ec2.ex_stop_node(node_id) 
+            return
+        
+        elif arguments.delete:
+            print("delete")
+            node_id = 'i-08f3ed1058f95f8bd'
+            driver_ec2._get_terminate_boolean(node_id)
+            return
+        
         else:
             print("not implemented")
 
