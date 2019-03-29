@@ -63,6 +63,7 @@ Big Red II has two types of computer nodes:
 
 Carbonate is comprised of 72 computer nodes with 256GB of RAM and 8 larger nodes with 512GB of RAM.
 Karst has two types of nodes: compute nodes with 32 GB and data nodes with 64 GB. Theses nodes can handle “large amounts of processing capacity over long periods of time”[4] as well as “high throughput and data-intensive parallel computing jobs.” [[4]](https://kb.iu.edu/d/alde)
+
 AWS has a much larger selection of nodes to choose from, with larger amount of memory and storage than IU supercomputers. Also, due to their large selection, the queue time will be much less for AWS.
 
 ## X.3.2 Resources
