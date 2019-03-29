@@ -9,15 +9,15 @@ The use of computers to solve complex problems or to run advanced application pr
 Demand for High Performance Computing (HPC) resources has been rapidly increasing in recent years. HPC provides a means for large discoveries in both science and engineering. For example, data analytics for finance and the healthcare community, computational modelling of proteins, the simulation of large biological systems, weather simulations, as well as other applications in design and engineering.
 
 Other applications of HPC include: (from [2] and [3])
-..* Research labs
-....* Life sciences
-....* Energy and earth sciences
-..* Oil and gas industry modeling
-..* Design and engineering
-....* Electronics design automation
-....* 3D rendering
-..* Climate modeling
-..* Media and entertainment
+⋅⋅* Research labs
+⋅⋅⋅⋅* Life sciences
+⋅⋅⋅⋅* Energy and earth sciences
+⋅⋅* Oil and gas industry modeling
+⋅⋅* Design and engineering
+⋅⋅⋅⋅* Electronics design automation
+⋅⋅⋅⋅* 3D rendering
+⋅⋅* Climate modeling
+⋅⋅* Media and entertainment
 
 ## X.2 Structure
 Many of these problems require an enormous amount of computing power to solve and typical commercial desktop or laptops fall short. High performance computers can provide the large amount of processors, memory, and disk space required for these applications. Two main barriers lie between the user and these high performance machines—cost and ease of usage. Firstly, the cost of computing power required for HPC is too large for personal use.
