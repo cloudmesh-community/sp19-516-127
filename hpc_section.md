@@ -1,4 +1,17 @@
+
+
 # X High Performance Computing in the Cloud
+
+:o: remove X and numbers, this is done automatically
+
+:o: empty line after each heading and befor item list and so on, look markdown bets practices in our scientifif writing handbook
+
+:o: does not explain practivally how to submit a job
+
+:o: refernces must also be bibtex
+
+:o: http in text must be wrapped in <>
+
 ## X.0 Definition (from [[1]](https://searchdatacenter.techtarget.com/definition/high-performance-computing-HPC) and [[2]](https://www.techopedia.com/definition/4595/high-performance-computing-hpc))
 The use of computers to solve complex problems or to run advanced application programs efficiently, reliably, and quickly, typically through parallel processing techniques.[[1]](https://searchdatacenter.techtarget.com/definition/high-performance-computing-HPC) Formally, these calculations are performed with at least a performance of one teraflop and can span activities such as computer modeling, simulation, and analysis.[[2]](https://www.techopedia.com/definition/4595/high-performance-computing-hpc)
 
