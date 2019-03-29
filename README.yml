@@ -8,7 +8,7 @@ owner:
 section:
   - title: HPC in the Cloud 
     keyword: HPC
-    url:
+    url: https://github.com/cloudmesh-community/sp19-516-127/blob/master/hpc_section.md
 project:
   - keyword: AWS, VM
     title: AWS VM manager
