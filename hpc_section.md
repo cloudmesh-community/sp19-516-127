@@ -20,15 +20,9 @@ Other applications of HPC include: (from [[2]](https://www.techopedia.com/defini
 ## X.2 Structure
 Many of these problems require an enormous amount of computing power to solve and typical commercial desktop or laptops fall short. High performance computers can provide the large amount of processors, memory, and disk space required for these applications. Two main barriers lie between the user and these high performance machines—cost and ease of usage. Firstly, the cost of computing power required for HPC is too large for personal use.
 
-![Structure of a HPC system (from [[4]](https://www.netapp.com/us/info/what-is-high-performance-computing.aspx))](images/code.png){#fig:code-example}
-
-
-
 Typically, a cluster of many computers can be constructed (See Figure 1), however set up, interfacing between many computers (or nodes), and storing the data can be difficult and require expertise in computer architecture and parallel computing. Alternatively, HPC can be treated as a service from a cloud provider. HPC in the cloud provides solutions to both of these problems. These services require the user to pay only for computing power and provide built in functions and features for ease of use. On-premise HPC resources introduce expenses for keeping the system running (even when not directly running computations) along with other maintenance fees, costly contracts, and licensing agreements. Cloud-based HPC services removes the overhead cost as many offer an “only pay for what you use” policy,[[3]](https://aws.amazon.com/hpc/) charging by time and size of the computing power.
 
 Cloud providers (such as Amazon) allow for the HPC computations, storage of data, analysis, and visualization to be performed remotely (See Figure 2). This service circumvents the need to have computing clusters on-premises (for most applications) and allows the access to HPC from command lines and browsers on electronic devices.
-
-Figure 2. Structure of AWS (Amazon) HPC infrastructure (from [[5]](https://d1.awsstatic.com/HPC2019/18-AWS-001%20HCLS%20Infographic_final.pdf))
 
 Additionally, the major commercial providers for cloud-based HPC such as AWS (Amazon), Azure (Microsoft), and Google have a vast amount of research and development going into their services, allowing any user to benefit from the implementation of features, such as PaaS, parallel computing, artificial intelligence (AI), and machine learning, without the need for each user to develop it themselves. Thus, a large push to the use of cloud-based HPC services will allow more users to solve more problems remotely in a quicker, more cost-effective manner.
 
