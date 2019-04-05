@@ -15,6 +15,10 @@ from libcloud.compute.base import NodeImage
 
 from cloudmesh.abstractclass.ComputeNodeABC import ComputeNodeABC 
 
+#
+#	run demo/run_newawsvm.sh script for a demo of starting, displaying status, and stopping nodes in aws vm
+#
+
 class AwsActions(object):
 
     ProviderMapper = {
