@@ -12,6 +12,6 @@ section:
 project:
   - keyword: AWS, VM
     title: AWS VM manager
-    url:
-    code: https://github.com/cloudmesh-community/sp19-516-127/vm/vm.py
+    url: https://github.com/cloudmesh-community/sp19-516-127/blob/master/project_code/cloudmesh.newawsvm/cloudmesh/newawsvm/command/newawsvm.py
+    code: project_code/cloudmesh.newawsvm/cloudmesh/newawsvm/command/newawsvm.py
       
