@@ -39,12 +39,12 @@ Cloud providers (such as Amazon) allow for the HPC computations, storage of data
 Additionally, the major commercial providers for cloud-based HPC such as AWS (Amazon), Azure (Microsoft), and Google have a vast amount of research and development going into their services, allowing any user to benefit from the implementation of features, such as PaaS, parallel computing, artificial intelligence (AI), and machine learning, without the need for each user to develop it themselves. Thus, a large push to the use of cloud-based HPC services will allow more users to solve more problems remotely in a quicker, more cost-effective manner.
 
 ## X.2.1 References and Resources
- [1] https://searchdatacenter.techtarget.com/definition/high-performance-computing-HPC
- [2] https://www.techopedia.com/definition/4595/high-performance-computing-hpc
- [3] https://aws.amazon.com/hpc/
- [4] https://www.netapp.com/us/info/what-is-high-performance-computing.aspx
- [5] https://d1.awsstatic.com/HPC2019/18-AWS-001%20HCLS%20Infographic_final.pdf
- [6] https://insidehpc.com/
+ [1] <https://searchdatacenter.techtarget.com/definition/high-performance-computing-HPC>
+ [2] <https://www.techopedia.com/definition/4595/high-performance-computing-hpc>
+ [3] <https://aws.amazon.com/hpc/>
+ [4] <https://www.netapp.com/us/info/what-is-high-performance-computing.aspx>
+ [5] <https://d1.awsstatic.com/HPC2019/18-AWS-001%20HCLS%20Infographic_final.pdf>
+ [6] <https://insidehpc.com/>
 
 ## X.3 Features
 Cloud-based HPC providers including AWS[[1]](https://aws.amazon.com/hpc/), Azure[[2]](https://azure.microsoft.com/en-us/solutions/big-compute/), and Google[[3]](https://cloud.google.com/solutions/hpc/) all have many features which can in their respective sections or in the resources below. (link to other sections)
@@ -73,7 +73,7 @@ Karst has two types of nodes: compute nodes with 32 GB and data nodes with 64 GB
 AWS has a much larger selection of nodes to choose from, with larger amount of memory and storage than IU supercomputers. Also, due to their large selection, the queue time will be much less for AWS.
 
 ## X.3.2 Resources
- [1] https://aws.amazon.com/hpc/
- [2] https://azure.microsoft.com/en-us/solutions/big-compute/
- [3] https://cloud.google.com/solutions/hpc/
- [4] https://kb.iu.edu/d/alde
+ [1] <https://aws.amazon.com/hpc/>
+ [2] <https://azure.microsoft.com/en-us/solutions/big-compute/>
+ [3] <https://cloud.google.com/solutions/hpc/>
+ [4] <https://kb.iu.edu/d/alde>
