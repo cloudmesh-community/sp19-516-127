@@ -15,6 +15,11 @@ from libcloud.compute.base import NodeImage
 
 from cloudmesh.abstractclass.ComputeNodeABC import ComputeNodeABC 
 
+
+#
+#	run demo/run_newawsvm.sh script for a demo of starting, displaying status, and stopping nodes in aws vm
+#
+
 class AwsActions(object):
 
     ProviderMapper = {
@@ -27,31 +32,43 @@ class AwsActions(object):
         self._provider = LibcloudProvider.EC2
 
 
+    def list_flavors(self):
+        flavors = self._provider.flavors()
+        print(Printer.list(flavors))
 
-class VmCommand(PluginCommand):
 
-    # see also https://github.com/cloudmesh/client/edit/master/cloudmesh_client/shell/plugins/VmCommand.py
+    def deallocate_node(self, id):
+        self._provider.deallocate_node(id)
 
-    # noinspection PyUnusedLocal
+
+    def list_nodes(self):
+        nodes = []
+        for n in self._provider.nodes():
+            d = {}
+            d['id'] = n.id
+            d['key'] = n.key_name
+            d['image_id'] = n.image_id
+            d['private_ip'] = n.private_ip_address
+            d['public_ip'] = n.public_ip_address
+            d['state'] = n.state['Name']
+            nodes.append(d)
+
+        print(Printer.list(nodes))
+
+class NewawsvmCommand(PluginCommand):
+
     @command
-    def do_vm(self, args, arguments):
+    def do_newawsvm(self, args, arguments):
         """
         ::
             Usage:
-                vm ping [NAMES] [--cloud=CLOUDS] [N]
-                vm check [NAMES] [--cloud=CLOUDS]
-                vm refresh [NAMES] [--cloud=CLOUDS]
-                vm status [NAMES] [--cloud=CLOUDS]
-                vm console [NAME] [--force]
-                vm start [NAMES] [--cloud=CLOUD] [--dryrun]
-                vm stop [NAMES] [--cloud=CLOUD] [--dryrun]
-                vm terminate [NAMES] [--cloud=CLOUD] [--dryrun]
-                vm delete [NAMES] [--cloud=CLOUD] [--dryrun]
-                vm list [NAMES]
+                newawsvm status [NAMES] [--cloud=CLOUDS]
+                newawsvm stop [NAMES] [--cloud=CLOUD] [--dryrun]
+                newawsvm list [NAMES]
                         [--cloud=CLOUDS]
                         [--format=FORMAT]
                         [--refresh]
-                vm boot [--name=NAME]
+                newawsvm boot [--name=NAME]
                         [--cloud=CLOUD]
                         [--username=USERNAME]
                         [--image=IMAGE]
@@ -60,7 +77,7 @@ class VmCommand(PluginCommand):
                         [--secgroup=SECGROUPs]
                         [--key=KEY]
                         [--dryrun]
-                vm boot [--n=COUNT]
+                newawsvm boot [--n=COUNT]
                         [--cloud=CLOUD]
                         [--username=USERNAME]
                         [--image=IMAGE]
@@ -69,28 +86,6 @@ class VmCommand(PluginCommand):
                         [--secgroup=SECGROUPS]
                         [--key=KEY]
                         [--dryrun]
-                vm run [--name=NAMES] [--username=USERNAME] [--dryrun] COMMAND
-                vm script [--name=NAMES] [--username=USERNAME] [--dryrun] SCRIPT
-                vm ip assign [NAMES]
-                          [--cloud=CLOUD]
-                vm ip show [NAMES]
-                           [--group=GROUP]
-                           [--cloud=CLOUD]
-                           [--format=FORMAT]
-                           [--refresh]
-                vm ip inventory [NAMES]
-                vm ssh [NAMES] [--username=USER]
-                         [--quiet]
-                         [--ip=IP]
-                         [--key=KEY]
-                         [--command=COMMAND]
-                         [--modify-knownhosts]
-                vm rename [OLDNAMES] [NEWNAMES] [--force] [--dryrun]
-                vm wait [--cloud=CLOUD] [--interval=SECONDS]
-                vm info [--cloud=CLOUD]
-                        [--format=FORMAT]
-                vm username USERNAME [NAMES] [--cloud=CLOUD]
-                vm resize [NAMES] [--size=SIZE]
             Arguments:
                 COMMAND        positional arguments, the commands you want to
                                execute on the server(e.g. ls -a) separated by ';',
@@ -133,32 +128,17 @@ class VmCommand(PluginCommand):
                                  specify the commands to be executed
             Description:
                 commands used to boot, start or delete servers of a cloud
-                vm default [options...]
+                newawsvm default [options...]
                     Displays default parameters that are set for vm boot either
                     on the default cloud or the specified cloud.
-                vm boot [options...]
+                newawsvm boot [options...]
                     Boots servers on a cloud, user may specify flavor, image
                     .etc, otherwise default values will be used, see how to set
                     default values of a cloud: cloud help
-                vm start [options...]
-                    Starts a suspended or stopped vm instance.
-                vm stop [options...]
+                newawsvm stop [options...]
                     Stops a vm instance .
-                vm delete [options...]
-                    Delete servers of a cloud, user may delete a server by its
-                    name or id, delete servers of a group or servers of a cloud,
-                    give prefix and/or range to find servers by their names.
-                    Or user may specify more options to narrow the search
-                vm floating_ip_assign [options...]
-                    assign a public ip to a VM of a cloud
-                vm ip show [options...]
-                    show the ips of VMs
-                vm ssh [options...]
-                    login to a server or execute commands on it
-                vm list [options...]
-                    same as command "list vm", please refer to it
-                vm status [options...]
-                    Retrieves status of last VM booted on cloud and displays it.
+                newawsvm status [options...]
+                    Retrieves status of VM booted on cloud and displays it.
             Tip:
                 give the VM name, but in a hostlist style, which is very
                 convenient when you need a range of VMs e.g. sample[1-3]
@@ -239,11 +219,11 @@ class VmCommand(PluginCommand):
                        'size',
                        'username')
 
-        pprint(arguments)
+        #pprint(arguments)
 
         variables = Variables()
 
-        # Needs to be initialized somewhere else 
+        # INITIALIZE 
         conf=Config("~/.cloudmesh/cloudmesh4.yaml")["cloudmesh"]
         auth=conf["cloud"]['aws']
 
@@ -252,22 +232,28 @@ class VmCommand(PluginCommand):
         region_name=auth['default']['region']
 
         EC2Driver = get_driver(LibcloudProvider.EC2)
-                      
+        driver_ec2 = EC2Driver(aws_access_key_id, aws_secret_access_key, region='us-east-2')
         # drivers contains list of drivers, could work with multiple drivers
         drivers = [EC2Driver(aws_access_key_id, aws_secret_access_key, region='us-east-2')]
         
         current_status={}
-        
+        nodes = []
+        for driver in drivers:
+            nodes += driver.list_nodes()
+        for node in nodes:
+            current_status[node.name]=node.state
+        #pprint(current_status)
+	
+        # initialized
+
+
+ 
         if arguments.status:
             names = []
-            nodes = [] 
+             
             if arguments["--cloud"]:
                 clouds = get_clouds(arguments, variables)
-                print(clouds)
-#                for cloud in clouds:
-#                    Console.msg(
-#                        "find names in cloud {cloud}".format(cloud=cloud))
-#                    # names = find all names in these clouds
+                #print(clouds)
             else:
                 names = get_names(arguments, variables)
             
@@ -275,25 +261,30 @@ class VmCommand(PluginCommand):
             if arguments["NAMES"]:
                 names += arguments["NAMES"]
             else:
-                names = ["test", "test2", "test3"] 
+                names = ["test_cloudmesh0", "test_cloudmesh01", "test_cloudmesh02"] 
 
-            nodes = []
 
+            #print("Current nodes:",nodes)
+
+            # nodes contains all current nodes associated with aws_access_key_id
+
+            numb_of_nodes=len(nodes)
+            print("--Status on all nodes:")
+            print("--Currently, there are",numb_of_nodes,"nodes.")
             for driver in drivers:
-                nodes += driver.list_nodes()
-            print("Current nodes:",nodes)
-            print(nodes[0])
-            # nodes contains all current nodes associated with aws_access_key_iD
+                for node in nodes:
+                    print("Name:",node.name,"\n  Status:",node.state,"\n  InstanceId:",node.id,"\n")
 
             for name in names:
+                print("--Finding the status on:", name,"...")
                 found = 0
                 for node in nodes:
                     if node.name == name:
-                        print("found",node.name) 
-                        print(node.name,"status:",node.state)
+                        print(node.name,": found") 
+                        print("  Status:",node.state)
                         found=1
                 if found == 0:
-                    print(name,"status:","not found")
+                    print(name,": not found")
             return
         
         elif arguments.boot:
@@ -302,34 +293,34 @@ class VmCommand(PluginCommand):
             except:
                 numb_of_nodes=1
                 
-            print("start")
+            print("--Starting nodes")
             
-            driver_ec2 = EC2Driver(aws_access_key_id, aws_secret_access_key, region='us-east-2')
             numb_of_nodes=1
             for number in range(numb_of_nodes):
                 name      = 'test_cloudmesh' + str(number)
                 image     = 'ami-0653e888ec96eab9b'     
                 flavor    = 't2.micro'
                 key       = 'test_awskeys'        
-                public_ip = '3.17.128.170'
-            
+                            
                 current_status[name] = "starting"
-                
-                #images = driver_ec2.list_images()
-                #image1 = [i for i in images if i.id == image][0]
-
                 sizes = driver_ec2.list_sizes()
                 size = [s for s in sizes if s.id == 't2.micro'][0]   
 
-                #node = self._provider.allocate_node(name=name, key=key, image=image, flavor=flavor)
-                #node = driver_ec2.create_node(name=name, key=key, image=image1, size=size)
-                
                 node_image = NodeImage(id=image, name=None, driver=driver_ec2)
-                node = driver_ec2.create_node(name='test', image=node_image, size=size) 
+                found = 1
+                while found == 1:
+                    if name in current_status:
+                        print(name,"already taken")
+                        name = name + "1"
+                        print("using",name,"instead")
+                    else:
+                        found = 0
+                
+                node = driver_ec2.create_node(name=name, image=node_image, size=size) 
                 
                 print(name,node.id,"status=starting")
                 #optional wait here?
-                #print('Waiting...')
+                print('Waiting...')
                 #node.wait_until_running()
                 #current_status[name] = "running"
             return
@@ -342,19 +333,20 @@ class VmCommand(PluginCommand):
             return
         
         elif arguments.stop:
-            print("stop")
-            # use these as a demo, node_id can be retrieved from the same code in vm status implemented above
-            # implemented above as list_nodes() and node.name
-            node_id = 'i-08f3ed1058f95f8bd' 
-            driver_ec2.ex_stop_node(node_id) 
+            print("--Stopping nodes")
+            names = ["test_cloudmesh0","test_cloudmesh01"]
+            for name in names:
+                found = 0
+                for node in nodes:
+                    if node.name == name:
+                        print(node.name,": found") 
+                        print("stopping",node.name)
+                        driver_ec2.ex_stop_node(node)
+                        print(node.name,"was stopped")
+                        found=1
+                if found == 0:
+                    print(name,": not found")
+                    print(name,"was not stopped")
             return
-        
-        elif arguments.delete:
-            print("delete")
-            node_id = 'i-08f3ed1058f95f8bd'
-            driver_ec2._get_terminate_boolean(node_id)
-            return
-        
         else:
             print("not implemented")
-
