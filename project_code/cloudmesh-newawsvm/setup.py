@@ -28,8 +28,7 @@ def readfile(filename):
 # add minimum requirements here
 #
 requiers = """
-psutil
-pygments
+######## put in my requirementS
 """.split("\n")
 
 # dependency_links = ['http://github.com/nicolaiarocci/eve.git@develop']
@@ -41,11 +40,11 @@ with open('README.md') as f:
 
 
 
-NAME = "cloudmesh.newawsvm"
+NAME = "cloudmesh-newawsvm"
 DESCRIPTION = "A command called newawsvm and foo for the cloudmesh shell"
 AUTHOR = "Gregor von Laszewski"
 AUTHOR_EMAIL = "laszewski@gmail.com"
-URL = "https://github.com/cloudmesh/cloudmesh.newawsvm"
+URL = "https://github.com/cloudmesh/cloudmesh-newawsvm"
 
 
 setup(
@@ -73,7 +72,6 @@ setup(
     tests_require=[
         "flake8",
         "coverage",
-        "tox",
     ],
     zip_safe=False,
     namespace_packages=['cloudmesh'],

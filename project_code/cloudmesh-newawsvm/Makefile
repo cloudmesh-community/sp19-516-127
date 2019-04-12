@@ -116,7 +116,7 @@ dist: twine clean
 upload_test: dist
 #	python setup.py	 sdist bdist bdist_wheel upload -r pypitest
 	rm dist/*.zip
-	twine upload --repository pypitest dist/cloudmesh.bar-*.whl	dist/cloudmesh.bar-*.tar.gz
+	twine upload --repository pypitest dist/cloudmesh-bar-*.whl	dist/cloudmesh-bar-*.tar.gz
 
 log:
 	gitchangelog | fgrep -v ":dev:" | fgrep -v ":new:" > ChangeLog
@@ -127,10 +127,10 @@ log:
 #	@echo "######################################"
 #	@echo "# $(VERSION)"
 #	@echo "######################################"
-#	twine register dist/cloudmesh.$(package)-$(VERSION)-py2.py3-none-any.whl
-#	twine register dist/cloudmesh.$(package)-$(VERSION).macosx-10.12-x86_64.tar.gz
-#	twine register dist/cloudmesh.$(package)-$(VERSION).tar.gz
-#	twine register dist/cloudmesh.$(package)-$(VERSION).zip
+#	twine register dist/cloudmesh-$(package)-$(VERSION)-py2.py3-none-any.whl
+#	twine register dist/cloudmesh-$(package)-$(VERSION).macosx-10.12-x86_64.tar.gz
+#	twine register dist/cloudmesh-$(package)-$(VERSION).tar.gz
+#	twine register dist/cloudmesh-$(package)-$(VERSION).zip
 
 upload: dist
 	twine upload dist/*
