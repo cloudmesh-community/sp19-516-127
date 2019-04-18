@@ -8,7 +8,7 @@
 
 -[x] does not explain practivally how to submit a job
 
--[ ] refernces must also be bibtex
+-[x] refernces must also be bibtex: https://github.com/cloudmesh-community/sp19-516-127/blob/master/hpc_section.bib
 
 -[x] http in text must be wrapped in <>
 
