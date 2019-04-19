@@ -1,7 +1,7 @@
 
 # VM Manager - AWS (ec2 / libcloud)
 
-Eric Collins
+Eric Collins ( colliner / sp19-516-127 )
 
 Last updated: 19 April 2019
 
