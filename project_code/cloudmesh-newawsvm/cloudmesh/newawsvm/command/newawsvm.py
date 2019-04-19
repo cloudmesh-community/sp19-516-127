@@ -17,7 +17,8 @@ from cloudmesh.abstractclass.ComputeNodeABC import ComputeNodeABC
 
 
 #
-#	run demo/run_newawsvm.sh script for a demo of starting, displaying status, and stopping nodes in aws vm
+#	run demo/run_vm.sh script for a demo of starting, displaying status, and stopping nodes in aws vm
+#       pytest in progress
 #
 
 class AwsActions(object):
@@ -128,16 +129,16 @@ class NewawsvmCommand(PluginCommand):
                                  specify the commands to be executed
             Description:
                 commands used to boot, start or delete servers of a cloud
-                newawsvm default [options...]
+                vm default [options...]
                     Displays default parameters that are set for vm boot either
                     on the default cloud or the specified cloud.
-                newawsvm boot [options...]
+                vm boot [options...]
                     Boots servers on a cloud, user may specify flavor, image
                     .etc, otherwise default values will be used, see how to set
                     default values of a cloud: cloud help
-                newawsvm stop [options...]
+                vm stop [options...]
                     Stops a vm instance .
-                newawsvm status [options...]
+                vm status [options...]
                     Retrieves status of VM booted on cloud and displays it.
             Tip:
                 give the VM name, but in a hostlist style, which is very
@@ -147,8 +148,9 @@ class NewawsvmCommand(PluginCommand):
             Quoting commands:
                 cm vm login gvonlasz-004 --command=\"uname -a\"
         """
-
+        #print(args, arguments)
         def map_parameters(arguments, *args):
+            
             for arg in args:
                 flag = "--" + arg
                 if flag in arguments:
@@ -175,9 +177,9 @@ class NewawsvmCommand(PluginCommand):
             else:
                 clouds = Parameter.expand(clouds)
 
-            if clouds is None:
-                Console.error("you need to specify a cloud")
-                return None
+            #if clouds is None:
+            #    Console.error("")
+            #    return None
 
             return clouds
 
@@ -185,7 +187,6 @@ class NewawsvmCommand(PluginCommand):
             names = arguments["NAME"] or arguments["NAMES"] or arguments[
                 "--name"] or variables["vm"]
             if names is None:
-                Console.error("you need to specify a vm")
                 return None
             else:
                 return Parameter.expand(names)
@@ -195,6 +196,77 @@ class NewawsvmCommand(PluginCommand):
             for name in names:
                 Console.msg("{label} {name}".format(label=label, name=name))
                 # r = f(name)
+		
+        def increment_string(strng):
+            ls = list(strng)
+            numb_where = [0]*len(ls)
+            numb = ""
+            count_zeros = 0
+            i = 0
+            insert = len(ls) - 1
+            while i < len(ls):
+                try:
+                    int(ls[i])
+                    numb_where[i] = 1
+                    if int(ls[i]) == 0 and numb_where[i-1] == 0:
+                        numb_where[i] = 1
+                        count_zeros += 1
+                    elif numb_where[i-1] == 0:
+		    # found a second number (disconnected)
+                        if numb_where[i] == 1:
+                            j = 0
+                            while j < i:
+                                numb_where[j] == 0
+                                j += 1
+                        numb = ""
+                        numb = numb + ls[i]
+                        insert = i
+                    else:
+                        numb = numb + ls[i]
+                    i += 1
+                except:
+                    i += 1
+                    continue
+
+            if sum(numb_where) == 0:
+                if count_zeros == 0:
+                    return strng + str(1)
+                else: 
+                    new_strng = ""
+                    i = 0
+                    rm_zero = 1
+                    while i < len(ls):
+                        if ls[i] == str(0) and rm_zero == 1:
+                            rm_zero = 0
+                        else:
+                            new_strng = new_strng + ls[i]
+                        i += 1  
+                    return new_strng + str(1)    
+            b4 = len(numb)
+            numb = int(numb) + 1
+            after = len(str(numb))
+            if b4 != after:
+                rm_zero = 1
+            else:
+                rm_zero = 0
+            new_strng = ""
+            new_numb_added = 0
+            i = 0
+            while i < len(numb_where):
+                if numb_where[i] == 0:
+                    if numb_where[i+1] == 1 and rm_zero == 1 and ls[i] == str(0):
+                        rm_zero = 0
+                    else:
+                        new_strng = new_strng + ls[i]
+                elif new_numb_added == 0:
+                    if i == insert:
+                        new_strng = new_strng + str(numb)
+                        new_numb_added = 1
+                    else: 
+                        new_strng = new_strng + ls[i]
+
+                i += 1
+            return new_strng
 
         map_parameters(arguments,
                        'active',
@@ -249,33 +321,32 @@ class NewawsvmCommand(PluginCommand):
 
  
         if arguments.status:
-            names = []
-             
+            #if names == None:
+            #    names = []
+ 
             if arguments["--cloud"]:
                 clouds = get_clouds(arguments, variables)
                 #print(clouds)
             else:
                 names = get_names(arguments, variables)
-            
-                        
-            if arguments["NAMES"]:
-                names += arguments["NAMES"]
-            else:
-                names = ["test_cloudmesh0", "test_cloudmesh01", "test_cloudmesh02"] 
-
+            #pprint(names) 
+            if names == None:
+                names = []                        
 
             #print("Current nodes:",nodes)
-
             # nodes contains all current nodes associated with aws_access_key_id
 
             numb_of_nodes=len(nodes)
-            print("--Status on all nodes:")
-            print("--Currently, there are",numb_of_nodes,"nodes.")
-            for driver in drivers:
-                for node in nodes:
-                    print("Name:",node.name,"\n  Status:",node.state,"\n  InstanceId:",node.id,"\n")
 
-            for name in names:
+            if "all" in names or len(names) == 0:
+                print("--Status on all nodes:")
+                print("--Currently, there are",numb_of_nodes,"nodes.")
+                for driver in drivers:
+                    for node in nodes:
+                        print("Name:",node.name,"\n  Status:",node.state,"\n  InstanceId:",node.id,"\n")
+                return
+            elif len(names) == 1:
+                name=names[0]
                 print("--Finding the status on:", name,"...")
                 found = 0
                 for node in nodes:
@@ -285,6 +356,24 @@ class NewawsvmCommand(PluginCommand):
                         found=1
                 if found == 0:
                     print(name,": not found")
+            elif "all" not in names and len(names) > 1:
+                for name in names:
+                    print("--Finding the status on:", name,"...")
+                    found = 0
+                    for node in nodes:
+                        if node.name == name:
+                            print(node.name,": found") 
+                            print("  Status:",node.state)
+                            found=1
+                    if found == 0:
+                        print(name,": not found")
+            if found==0:
+                print("--Status on all nodes:")
+                print("--Currently, there are",numb_of_nodes,"nodes.")
+                for driver in drivers:
+                    for node in nodes:
+                        print("Name:",node.name,"\n  Status:",node.state,"\n  InstanceId:",node.id,"\n")
+
             return
         
         elif arguments.boot:
@@ -294,10 +383,12 @@ class NewawsvmCommand(PluginCommand):
                 numb_of_nodes=1
                 
             print("--Starting nodes")
-            
             numb_of_nodes=1
             for number in range(numb_of_nodes):
-                name      = 'test_cloudmesh' + str(number)
+                if number < 10:
+              	    name = 'test00_cloudmesh' + '0' + str(number)
+                else:
+                    name = 'test00_cloudmesh' + str(number)
                 image     = 'ami-0653e888ec96eab9b'     
                 flavor    = 't2.micro'
                 key       = 'test_awskeys'        
@@ -311,18 +402,17 @@ class NewawsvmCommand(PluginCommand):
                 while found == 1:
                     if name in current_status:
                         print(name,"already taken")
-                        name = name + "1"
+                        name = increment_string(name)
                         print("using",name,"instead")
                     else:
                         found = 0
-                
                 node = driver_ec2.create_node(name=name, image=node_image, size=size) 
-                
-                print(name,node.id,"status=starting")
+                print(name,node.id,"status=starting; DRY RUN\n")
                 #optional wait here?
                 print('Waiting...')
                 #node.wait_until_running()
                 #current_status[name] = "running"
+            print("--Started",n,"node(s)")
             return
 
                    
@@ -334,9 +424,29 @@ class NewawsvmCommand(PluginCommand):
         
         elif arguments.stop:
             print("--Stopping nodes")
-            names = ["test_cloudmesh0","test_cloudmesh01"]
-            for name in names:
+            names = get_names(arguments, variables)
+            #pprint(names) 
+            if names == None:
+                names = []
+                print("--Error: you need to specify a node to stop")
+            #names = ["test_cloudmesh0","test_cloudmesh01"]
+            elif len(names) > 2:
+                for name in names:
+                    found = 0
+                    for node in nodes:
+                        if node.name == name:
+                            print(node.name,": found") 
+                            print("stopping",node.name)
+                            driver_ec2.ex_stop_node(node)
+                            print(node.name,"was stopped")
+                            found=1
+                    if found == 0:
+                        print(name,": not found")
+                        print(name,"was not stopped")
+                
+            else:
                 found = 0
+                name = names[0]
                 for node in nodes:
                     if node.name == name:
                         print(node.name,": found") 
@@ -350,3 +460,4 @@ class NewawsvmCommand(PluginCommand):
             return
         else:
             print("not implemented")
+
