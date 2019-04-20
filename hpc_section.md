@@ -2,17 +2,10 @@
 
 # High Performance Computing in the Cloud
 
-:o: section does not use bibtex refernces
+- [ ] :o: section does not use bibtex refernces
+- [ ] :o: does not explain practivally how to submit a job
+- [ ] :o: refernces must also be bibtex: https://github.com/cloudmesh-community/sp19-516-127/blob/master/hpc_section.bib
 
--[x] remove X and numbers, this is done automatically
-
--[x] empty line after each heading and befor item list and so on, look markdown bets practices in our scientifif writing handbook
-
--[x] does not explain practivally how to submit a job
-
--[x] refernces must also be bibtex: https://github.com/cloudmesh-community/sp19-516-127/blob/master/hpc_section.bib
-
--[x] http in text must be wrapped in <>
 
 ## Definition (from [[1]](<https://searchdatacenter.techtarget.com/definition/high-performance-computing-HPC>) and [[2]](<https://www.techopedia.com/definition/4595/high-performance-computing-hpc>))
 
