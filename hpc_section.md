@@ -2,6 +2,8 @@
 
 # High Performance Computing in the Cloud
 
+:o: section does not use bibtex refernces
+
 -[x] remove X and numbers, this is done automatically
 
 -[x] empty line after each heading and befor item list and so on, look markdown bets practices in our scientifif writing handbook
@@ -45,8 +47,8 @@ Additionally, the major commercial providers for cloud-based HPC such as AWS (Am
 ## References and Resources
 
  [1] <https://searchdatacenter.techtarget.com/definition/high-performance-computing-HPC>
-  
- [2] <https://www.techopedia.com/definition/4595/high-performance-computing-hpc> 
+ 
+ [2] <https://www.techopedia.com/definition/4595/high-performance-computing-hpc>
   
  [3] <https://aws.amazon.com/hpc/>
   
