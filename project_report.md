@@ -114,6 +114,14 @@ Increment string works by finding the furthest set of numbers from the beginning
 
 ![Alt text](report_images/cmsvmdemo_7.png)
 
+## pytest
+
+A pytest with benchmarking times has been created in https://github.com/cloudmesh-community/sp19-516-127/blob/master/project_code/cloudmesh-newawsvm/tests/test_benchmark.py and highlighted below. The pytest goes through each command as explained above and performed 13 total tests with different inputs, e.g. name, names, etc. All tests are done with --dryrun and completed within 31 seconds.
+
+![Alt text](report_images/pytest1.png)
+
+![Alt text](report_images/pytest2.png)
+
 ## Concluding Remarks
 
 SSH functionality/implementation has been started, the cms vm status would have to display information on how to ssh into each vm however the key.pm would also need to be located somewhere nearby or indicated in the cloudmesh4.yaml file. The way this vm manager is setup lends well to expanstion to multiple types of clouds, as the data structure for cloud/nodes is an array which my implementation loops over. This could be useful for finding names of nodes from multiple cloud providers and if booted with my code would check all nodes for a similar name before booting up the new node. MongoDB could also be used to store the status/update it when changed for any of the nodes, then this code could update the status from the clouds and read from MongoDB.
