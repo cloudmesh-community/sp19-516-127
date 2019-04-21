@@ -64,7 +64,9 @@ class NewawsvmCommand(PluginCommand):
         ::
             Usage:
                 newawsvm status [NAMES] [--cloud=CLOUDS]
+                newawsvm start [NAMES] [--cloud=CLOUD] [--dryrun]
                 newawsvm stop [NAMES] [--cloud=CLOUD] [--dryrun]
+                newawsvm terminate [NAMES] [--cloud=CLOUD] [--dryrun]
                 newawsvm list [NAMES]
                         [--cloud=CLOUDS]
                         [--format=FORMAT]
@@ -458,6 +460,81 @@ class NewawsvmCommand(PluginCommand):
                     print(name,": not found")
                     print(name,"was not stopped")
             return
+
+        elif arguments.terminate:
+            print("--Terminating nodes")
+            names = get_names(arguments, variables)
+            #pprint(names) 
+            if names == None:
+                names = []
+                print("--Error: you need to specify a node to terminate")
+            #names = ["test_cloudmesh0","test_cloudmesh01"]
+            elif len(names) > 2:
+                for name in names:
+                    found = 0
+                    for node in nodes:
+                        if node.name == name:
+                            print(node.name,": found") 
+                            print("terminating",node.name)
+                            driver_ec2.destroy_node(node)
+                            print(node.name,"was terminated")
+                            found=1
+                    if found == 0:
+                        print(name,": not found")
+                        print(name,"was not terminated")
+                
+            else:
+                found = 0
+                name = names[0]
+                for node in nodes:
+                    if node.name == name:
+                        print(node.name,": found") 
+                        print("terminating",node.name)
+                        driver_ec2.destroy_node(node)
+                        print(node.name,"was terminated")
+                        found=1
+                if found == 0:
+                    print(name,": not found")
+                    print(name,"was not terminated")
+            return
+
+        elif arguments.start:
+            print("--Restarting nodes")
+            names = get_names(arguments, variables)
+            #pprint(names) 
+            if names == None:
+                names = []
+                print("--Error: you need to specify a node to restart")
+            #names = ["test_cloudmesh0","test_cloudmesh01"]
+            elif len(names) > 2:
+                for name in names:
+                    found = 0
+                    for node in nodes:
+                        if node.name == name:
+                            print(node.name,": found") 
+                            print("starting",node.name)
+                            driver_ec2.ex_start_node(node)
+                            print(node.name,"was restarted")
+                            found=1
+                    if found == 0:
+                        print(name,": not found")
+                        print(name,"was not started")
+                
+            else:
+                found = 0
+                name = names[0]
+                for node in nodes:
+                    if node.name == name:
+                        print(node.name,": found") 
+                        print("starting",node.name)
+                        driver_ec2.ex_start_node(node)
+                        print(node.name,"was started")
+                        found=1
+                if found == 0:
+                    print(name,": not found")
+                    print(name,"was not started")
+            return
+
         else:
             print("not implemented")
 
