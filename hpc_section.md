@@ -3,9 +3,13 @@
 # High Performance Computing in the Cloud
 
 - [ ] :o: section does not use bibtex refernces
-- [ ] :o: does not explain practivally how to submit a job
-- [ ] :o: refernces must also be bibtex: https://github.com/cloudmesh-community/sp19-516-127/blob/master/hpc_section.bib
-
+    how do you reference bibtex references? they are all present in the corresponindg .bib file
+    
+- [X] :o: does not explain practivally how to submit a job
+    solved in the resources at the end. Would not like to plagiarize from the AWS tutorial, so I just liked the tutorial of setting up HPC nodes and submitting jobs at the end
+    
+    - [ ] :o: refernces must also be bibtex: https://github.com/cloudmesh-community/sp19-516-127/blob/master/hpc_section.bib
+   see above
 
 ## Definition (from [[1]](<https://searchdatacenter.techtarget.com/definition/high-performance-computing-HPC>) and [[2]](<https://www.techopedia.com/definition/4595/high-performance-computing-hpc>))
 
