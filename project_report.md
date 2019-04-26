@@ -118,6 +118,8 @@ Increment string works by finding the furthest set of numbers from the beginning
 
 A pytest with benchmarking times has been created in https://github.com/cloudmesh-community/sp19-516-127/blob/master/project_code/cloudmesh-newawsvm/tests/test_benchmark.py and highlighted below. The pytest goes through each command as explained above and performed 13 total tests with different inputs, e.g. name, names, etc. All tests are done with --dryrun and completed within 31 seconds.
 
+NOTE: THIS WORKS WITH MY VERSION OF AWSVM MANAGER FROM https://github.com/cloudmesh-community/sp19-516-127/blob/master/project_code/cloudmesh-newawsvm/cloudmesh/newawsvm/command/newawsvm.py AS THE VM COMMAND IN CLOUDMESH. THIS PYTEST DOES NOT WORK WITH THE CURRENT VM CODE IN cloudmesh-cloud/ as Gregor advised me not to copy mine over.
+
 ![Alt text](report_images/pytest1.png)
 
 ![Alt text](report_images/pytest2.png)
