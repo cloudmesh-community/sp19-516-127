@@ -16,5 +16,6 @@ project:
     code: https://github.com/cloudmesh-community/sp19-516-127/blob/master/project_code/cloudmesh-newawsvm/cloudmesh/newawsvm/command/newawsvm.py
     demo: https://github.com/cloudmesh-community/sp19-516-127/blob/master/project_report.md
     pytest: https://github.com/cloudmesh-community/sp19-516-127/blob/master/project_code/cloudmesh-newawsvm/tests/test_benchmark.py
+  - status: 99%
     
       
