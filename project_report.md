@@ -124,6 +124,10 @@ NOTE: THIS WORKS WITH MY VERSION OF AWSVM MANAGER FROM https://github.com/cloudm
 
 ![Alt text](report_images/pytest2.png)
 
+
+ PING ms : 34
+ DOWNLOAD Mbps : 69.27
+ UPLOAD Mbps : 5.99
 ```
 +-------------------+-------------------------------------------------------+
 | Machine Attribute | Time/s                                                |
