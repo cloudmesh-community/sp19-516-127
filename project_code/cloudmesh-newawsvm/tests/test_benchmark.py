@@ -175,3 +175,6 @@ class TestConfig:
 
         assert "yaml" in result
 
+    def print_benchmark(self):
+        HEADING()
+        StopWatch.benchmark()
