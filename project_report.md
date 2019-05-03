@@ -124,6 +124,44 @@ NOTE: THIS WORKS WITH MY VERSION OF AWSVM MANAGER FROM https://github.com/cloudm
 
 ![Alt text](report_images/pytest2.png)
 
++-------------------+-------------------------------------------------------+
+| Machine Attribute | Time/s                                                |
++-------------------+-------------------------------------------------------+
+| mac_version       |                                                       |
+| machine           | ('x86_64',)                                           |
+| node              | ('cloudcomputingVM',)                                 |
+| platform          | Linux-4.18.0-17-generic-x86_64-with-debian-buster-sid |
+| processor         | ('x86_64',)                                           |
+| processors        | Linux                                                 |
+| python            | 3.7.2 (default, Feb 14 2019, 23:11:37)                |
+|                   | [GCC 7.3.0]                                           |
+| release           | ('4.18.0-17-generic',)                                |
+| sys               | linux                                                 |
+| system            | Linux                                                 |
+| user              | colliner                                              |
+| version           | #18~18.04.1-Ubuntu SMP Fri Mar 15 15:27:12 UTC 2019   |
+| win_version       |                                                       |
++-------------------+-------------------------------------------------------+
++------------------+------+-----------------------+--------+-------------+-------------+
+| timer            | time | node                  | system | mac_version | win_version |
++------------------+------+-----------------------+--------+-------------+-------------+
+| cms help         | 2.06 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm status1   | 2.96 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm status2   | 2.49 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm status3   | 2.52 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm boot1     | 2.51 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm boot2     | 2.42 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm boot3     | 2.43 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm stop1     | 2.39 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm stop2     | 3.82 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm start1    | 3.17 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm start2    | 4.0  | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm terminate | 3.33 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm default   | 3.67 | ('cloudcomputingVM',) | Linux  |             |             |
++------------------+------+-----------------------+--------+-------------+-------------+
+
+
+
 ## Concluding Remarks
 
 SSH functionality/implementation has been started, the cms vm status would have to display information on how to ssh into each vm however the key.pm would also need to be located somewhere nearby or indicated in the cloudmesh4.yaml file. The way this vm manager is setup lends well to expanstion to multiple types of clouds, as the data structure for cloud/nodes is an array which my implementation loops over. This could be useful for finding names of nodes from multiple cloud providers and if booted with my code would check all nodes for a similar name before booting up the new node. MongoDB could also be used to store the status/update it when changed for any of the nodes, then this code could update the status from the clouds and read from MongoDB.
