@@ -16,6 +16,11 @@ project:
     code: https://github.com/cloudmesh-community/sp19-516-127/blob/master/project_code/cloudmesh-newawsvm/cloudmesh/newawsvm/command/newawsvm.py
     demo: https://github.com/cloudmesh-community/sp19-516-127/blob/master/project_report.md
     pytest: https://github.com/cloudmesh-community/sp19-516-127/blob/master/project_code/cloudmesh-newawsvm/tests/test_benchmark.py
+    benchmark: https://github.com/cloudmesh/cloudmesh-manual/blob/master/docs-source/source/benchmarks/awsec2_benchmark_ubuntu.md
   - status: 100%
+comprehension:
+  - title: Test compute database AWS Benchmark
+    url: https://github.com/cloudmesh/cloudmesh-manual/blob/master/docs-source/source/benchmarks/test_compute_database.md
+    code: https://github.com/cloudmesh-community/sp19-516-127/blob/master/test_compute_database_aws_eric.py
     
       
