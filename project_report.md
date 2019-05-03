@@ -124,6 +124,7 @@ NOTE: THIS WORKS WITH MY VERSION OF AWSVM MANAGER FROM https://github.com/cloudm
 
 ![Alt text](report_images/pytest2.png)
 
+```
 +-------------------+-------------------------------------------------------+
 | Machine Attribute | Time/s                                                |
 +-------------------+-------------------------------------------------------+
