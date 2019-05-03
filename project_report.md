@@ -160,7 +160,7 @@ NOTE: THIS WORKS WITH MY VERSION OF AWSVM MANAGER FROM https://github.com/cloudm
 | cms vm terminate | 3.33 | ('cloudcomputingVM',) | Linux  |             |             |
 | cms vm default   | 3.67 | ('cloudcomputingVM',) | Linux  |             |             |
 +------------------+------+-----------------------+--------+-------------+-------------+
-
+```
 
 
 ## Concluding Remarks
