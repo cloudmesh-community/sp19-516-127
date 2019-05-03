@@ -13,7 +13,7 @@ from cloudmesh.common.Printer import Printer
 from cloudmesh.common.Shell import Shell
 from cloudmesh.common.StopWatch import StopWatch
 from cloudmesh.common.util import HEADING
-#from cloudmesh.common.systeminfo import systeminfo
+from cloudmesh.common.systeminfo import systeminfo
 from pprint import pprint
 
 
