@@ -3,12 +3,15 @@
 
 Eric Collins ( colliner / sp19-516-127 )
 
-Last updated: 21 April 2019
+Last updated: 2 May 2019
 
 ## Introduction
 
-An implementation of Virtual Machine manager with AWS is implemented as the vm.py code using ec2 and libcloud. Earlier versions of the code were done with Boto2, however, as advised, all code was converted to libcloud. Link to the code can be found in the README. To run the AWS vm manager, AWS credentials need to be present in ~/.cloudmesh/cloudmesh4.yaml as well as the related defaults for booting virtual machines in AWS. Below are the commands implemented into the AWS vm manager in cloudmesh, including displaying status, booting new AWS vms, booting multiple AWS vms, stopping vms, restarting vms, terminating vms, and creating unique names for each new vm booted. The following is a demo (pytest in progress) and explanation to how the code works. Oracle VM VirtualBox was used running an ubuntu system, python 3.7.2 environment was used with pyenv. More features to implement are explained at the end of this report.
+An implementation of Virtual Machine manager with AWS is implemented as the vm.py code using ec2 and libcloud. Earlier versions of the code were done with Boto2, however, as advised, all code was converted to libcloud. Link to the code can be found in the README. To run the AWS vm manager, AWS credentials need to be present in ~/.cloudmesh/cloudmesh4.yaml as well as the related defaults for booting virtual machines in AWS. Below are the commands implemented into the AWS vm manager in cloudmesh, including displaying status, booting new AWS vms, booting multiple AWS vms, stopping vms, restarting vms, terminating vms, and creating unique names for each new vm booted. The following is a demo (pytest available and documents below) and explanation to how the code works. Oracle VM VirtualBox was used running an ubuntu system, python 3.7.2 environment was used with pyenv. More features to implement are explained at the end of this report.
 
+NOTE: Implementation into cloudmesh-cloud was not done as per request of Gregor on April 22nd 2019. He advised: "I will do the integration, so continue in your hid. I want you to achieve your best, so focussing on your own implementation may be more useful. However I do suggest you do look at cloudmesh-cloud as there are some things that are already implemented that you do not have to redo, such as the name function" With this, the AWS VM manager was continued here in my local hid and not integrated into cloudmesh-cloud. For completeness sake, my code has been benchmarked with existing benchmarks in cloudmesh-cloud as well as the pytest found through my README file and compared at the end of this document. It is important to note, however, that not all commands from vm and existing benchmarks are implemented in my own version of AWS VM Manager, so some of the tests have failed.
+
+Lastly, at the end of the document, to aid anyone in the future of implemented any of my work in to cloudmesh-cloud, I have left suggestions and comparisons of my work with the existing vm code.
 
 ## Features
 
@@ -166,8 +169,86 @@ NOTE: THIS WORKS WITH MY VERSION OF AWSVM MANAGER FROM https://github.com/cloudm
 +------------------+------+-----------------------+--------+-------------+-------------+
 ```
 
+Benchmark results using cloudmesh-cloud/tests/test_cms_aws.py
+
+```
++---------------------+------------------------------------------------------------------+
+| Machine Arribute    | Time/s                                                           |
++---------------------+------------------------------------------------------------------+
+| BUG_REPORT_URL      | "https://bugs.launchpad.net/ubuntu/"                             |
+| DISTRIB_CODENAME    | bionic                                                           |
+| DISTRIB_DESCRIPTION | "Ubuntu 18.04.2 LTS"                                             |
+| DISTRIB_ID          | Ubuntu                                                           |
+| DISTRIB_RELEASE     | 18.04                                                            |
+| HOME_URL            | "https://www.ubuntu.com/"                                        |
+| ID                  | ubuntu                                                           |
+| ID_LIKE             | debian                                                           |
+| NAME                | "Ubuntu"                                                         |
+| PRETTY_NAME         | "Ubuntu 18.04.2 LTS"                                             |
+| PRIVACY_POLICY_URL  | "https://www.ubuntu.com/legal/terms-and-policies/privacy-policy" |
+| SUPPORT_URL         | "https://help.ubuntu.com/"                                       |
+| UBUNTU_CODENAME     | bionic                                                           |
+| VERSION             | "18.04.2 LTS (Bionic Beaver)"                                    |
+| VERSION_CODENAME    | bionic                                                           |
+| VERSION_ID          | "18.04"                                                          |
+| mac_version         |                                                                  |
+| machine             | ('x86_64',)                                                      |
+| node                | ('cloudcomputingVM',)                                            |
+| platform            | Linux-4.18.0-17-generic-x86_64-with-debian-buster-sid            |
+| processor           | ('x86_64',)                                                      |
+| processors          | Linux                                                            |
+| python              | 3.7.2 (default, Feb 14 2019, 23:11:37)                           |
+|                     | [GCC 7.3.0]                                                      |
+| release             | ('4.18.0-17-generic',)                                           |
+| sys                 | linux                                                            |
+| system              | Linux                                                            |
+| user                | colliner                                                         |
+| version             | #18~18.04.1-Ubuntu SMP Fri Mar 15 15:27:12 UTC 2019              |
+| win_version         |                                                                  |
++---------------------+------------------------------------------------------------------+
++-------------------------+------+-----------------------+--------+-------------+-------------+
+| timer                   | time | node                  | system | mac_version | win_version |
++-------------------------+------+-----------------------+--------+-------------+-------------+
+| cms vm list             | 4.05 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm status           | 2.28 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm stop dryrun      | 2.45 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm stop             | 2.32 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm ping             | 2.33 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm check            | 1.81 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm run dryrun       | 2.3  | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm script dryrun    | 2.3  | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm start dryrun     | 1.78 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm start            | 2.44 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm delete dryrun    | 1.83 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm terminate dryrun | 2.56 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm terminate        | 2.23 | ('cloudcomputingVM',) | Linux  |             |             |
+| cms vm delete           | 1.78 | ('cloudcomputingVM',) | Linux  |             |             |
++-------------------------+------+-----------------------+--------+-------------+-------------+
+```
+
+Benchmarked timings are very similar in magnitude for the commands. Boot did not work with the current benchmark on cloudmesh-cloud as there was an issue with its configuration. Howver, every other command was benchmarked as work as expected.
+
+## Implementation into existing code: differences between my developments and current vm manager
+
+Herein, my code for the AWS VM Manager was developed to display clear tables in status, including listing all current vms and showing information about single (NAME=) or multiple (NAMES=) vms with the cloudmesh implemented table printer. The naming scheme I developed is also slightly more versatile as the current one assumes names will all be NAME-##. My implementation looks for all numbers in a given name,and only increments the last set. Such that cloudmesh01-test00 becomes cloudmesh01-test01 not cloudmesh02-test00 or cloudmesh02-test01. This could be more useful later on for users who will not necessarily follow the NAME-## scheme. VM default was also implemented, and not present in cloudmesh-cloud/vm, so a version from my manager could be used for the actual code.
+
+
+## Other Work in the Course
+
+1. Section/Report about High Performance Computing
+2. cloudmesh-manual contributions including how to get an aws account
+3. cloudmesh-manual entry about quick start guide for aws vm
+3. benchmarked vm command on Ubuntu system
+4. OpenAPI specification done earlier in the semester
 
 ## Concluding Remarks
+
+Commands not included in my code (assigned to another student):
+
+1. SSH
+2. Ping
+3. Wait
+4. Check
 
 SSH functionality/implementation has been started, the cms vm status would have to display information on how to ssh into each vm however the key.pm would also need to be located somewhere nearby or indicated in the cloudmesh4.yaml file. The way this vm manager is setup lends well to expanstion to multiple types of clouds, as the data structure for cloud/nodes is an array which my implementation loops over. This could be useful for finding names of nodes from multiple cloud providers and if booted with my code would check all nodes for a similar name before booting up the new node. MongoDB could also be used to store the status/update it when changed for any of the nodes, then this code could update the status from the clouds and read from MongoDB.
 
