@@ -2,7 +2,7 @@ from __future__ import print_function
 
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command
-from cloudmesh.shell.variables import Variables
+from cloudmesh.common.variables import Variables
 from cloudmesh.common.console import Console
 from pprint import pprint
 from cloudmesh.common.parameter import Parameter
@@ -166,7 +166,7 @@ class NewawsvmCommand(PluginCommand):
                 active = Active()
                 clouds = active.clouds()
             elif "aws" == clouds:
-                conf=Config("~/.cloudmesh/cloudmesh4.yaml")["cloudmesh"]
+                conf = Config("~/.cloudmesh/cloudmesh.yaml")["cloudmesh"]
                 auth=conf["cloud"]['aws']
                 aws = AwsActions(
                     aws_access_key_id=auth['credentials']['EC2_ACCESS_ID'],
@@ -290,7 +290,7 @@ class NewawsvmCommand(PluginCommand):
         variables = Variables()
 
         # INITIALIZE 
-        conf=Config("~/.cloudmesh/cloudmesh4.yaml")["cloudmesh"]
+        conf = Config("~/.cloudmesh/cloudmesh.yaml")["cloudmesh"]
         auth=conf["cloud"]['aws']
 
         aws_access_key_id=auth['credentials']['EC2_ACCESS_ID']
@@ -583,7 +583,8 @@ class NewawsvmCommand(PluginCommand):
             return
 
         elif arguments.default:
-            print("--Defaults used for booting vms in AWS: defaults can\n  be changed in ~/.cloudmesh/cloudmesh4.yaml file")
+            print(
+                "--Defaults used for booting vms in AWS: defaults can\n  be changed in ~/.cloudmesh/cloudmesh.yaml file")
             defaults_dict = [{
                 "Variable": "Name",
                 "Value": name_default,
